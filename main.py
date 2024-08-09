@@ -1,29 +1,16 @@
-from user import User
+from login_handler import LoginHandler
 from menu_handler import MenuHandler
 
-users = {}
-session_user: User | None = None
-
-
-def handle_login() -> None:
-    global users, session_user
-
-    username = str(input("Insert your username"))
-
-    if username in users:
-        session_user = users[username]
-    else:
-        users |= {username: User()}
-        session_user = users[username]
+users: dict = {}
 
 
 def handle_menu() -> None:
-    global session_user
-
     handler = MenuHandler()
 
-    handler.handle(session_user)
+    handler.handle(users)
 
 
-handle_login()
+LoginHandler.handle_login(users)
 handle_menu()
+
+

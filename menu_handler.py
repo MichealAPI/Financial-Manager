@@ -1,5 +1,5 @@
 import menu_options as opts
-from user import User
+from login_handler import LoginHandler
 
 
 class MenuHandler:
@@ -8,10 +8,13 @@ class MenuHandler:
         opts.PrintFormattedOption(),
         opts.SetBudgetOption(),
         opts.DelCategoryOption(),
-        opts.NewCategoryOption()
+        opts.NewCategoryOption(),
+        opts.AddEntry(),
+        opts.ShowEntries(),
+        opts.LogoutOption()
     ]
 
-    def handle(self, session_user: User):
+    def handle(self, sessions: dict):
 
         while True:
 
@@ -27,4 +30,4 @@ class MenuHandler:
                 print("Invalid choice.")
                 continue
 
-            self.options[choice].run(session_user)
+            self.options[choice].run(LoginHandler.session_user, sessions)
