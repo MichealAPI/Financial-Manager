@@ -9,3 +9,12 @@ class Category:
         self.description = description
 
         self.balance = 0.0
+
+    def __str__(self):
+        result = f"Category name: {self.name}\n"
+
+        result += f"Category Description: {self.description}\n"
+
+        result += f"Category Balance: ${self.balance}\n"
+
+        return result

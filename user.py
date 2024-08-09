@@ -2,36 +2,42 @@ from category import Category
 
 
 class User:
-
     _categories: dict
 
     def __init__(self):
         self._categories = {}
 
-    @property
-    def budgets(self) -> dict:
-        return self._budgets
+    def get_categories(self) -> dict:
+        return self._categories
 
-    @budgets.setter
-    def set_budgets(self, budgets: dict):
-        self._budgets = budgets
+    def get_balance(self, category_name: str) -> float | None:
+        target_category: Category | None = self._categories.get(category_name, None)
 
-    def set_budget(self, category_name: str, amount: float) -> None:
-        self._budgets |= {category: amount}
+        if target_category is None:
+            print(f"No category found by the name {category_name}")
+            return
 
-    def edit_budget(self, category_name: str, amount: float) -> float | None:
+        return target_category.balance
 
-        category: Category = self.get_or_default(self._categories, category_name, self.create_category(category_name))
+    def edit_budget(self, category_name: str, amount: float) -> None:
+
+        target_category: Category | None = self._categories.get(category_name, None)
+
+        if target_category is None:
+            print(f"No category found by the name {category_name}")
+            return
+
+        target_category.balance += amount
+        print(f"New balance: {target_category.balance}")
 
     def create_category(self, name: str, description: str = "No Description") -> Category:
-        result = Category(name, description, )
+        result = Category(name, description)
         self._categories |= {name: result}
 
         return result
 
-
     def delete_category(self, name: str) -> None:
-        target_category: Category | None = User.get_or_default(self._categories, name, None)
+        target_category: Category | None = self._categories.get(name, None)
 
         if target_category is None:
             print(f"Cannot delete category {target_category}")
@@ -47,11 +53,14 @@ class User:
 
         print(f"...deleted successfully {target_category.name} along with its own budgets")
 
-    @staticmethod
-    def get_or_default(dictionary: dict, key, default_value):
-        value = dictionary.get(key)
+    def __str__(self):
 
-        if value is None:
-            return default_value
+        result = ""
 
-        return value
+        for category_name in self._categories:
+
+            category: Category = self._categories[category_name]
+
+            result += category.__str__()
+
+        return result
